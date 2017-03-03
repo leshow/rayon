@@ -1,5 +1,6 @@
 use super::internal::*;
 use super::*;
+use super::noop::NoopConsumer;
 use std::cmp::min;
 
 pub struct Skip<M> {
@@ -76,7 +77,7 @@ impl<M> IndexedParallelIterator for Skip<M>
                 where P: Producer<Item = ITEM>
             {
                 let (before_skip, after_skip) = base.split_at(self.n);
-                bridge_producer_consumer(self.n, before_skip, noop::NoopConsumer::new());
+                bridge_producer_consumer(self.n, before_skip, NoopConsumer::new());
                 self.callback.callback(after_skip)
             }
         }
